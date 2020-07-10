@@ -44,9 +44,9 @@ const upload = multer({
 
 const router = express.Router();
 
-router.post("/", adminAuth, async (req, res) => {
+ router.post("/", async (req, res) => {
   try {
-    console.log(abcd);
+ 
     let cat = new Category({ ...req.body });
 
     const { error } = checkBrand(req.body.brandIds);
@@ -71,11 +71,13 @@ router.post("/", adminAuth, async (req, res) => {
       console.log(brand);
     }
     cat = await cat.save();
+    console.log(cat)
     res.send(cat);
   } catch (e) {
     res.status(402).send(e);
   }
 });
+
 
 router.post("/catImage", upload.single("catImage"), async (req, res) => {
   try {

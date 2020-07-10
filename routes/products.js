@@ -133,7 +133,7 @@ router.get("/user", auth, async (req, res) => {
   }
 });
 
-router.get("/user/getAllProducts", async (req, res) => {
+router.get("/user/getAllProducts", (req, res) => {
   //try {
   let filter = {
     price: {
@@ -145,8 +145,8 @@ router.get("/user/getAllProducts", async (req, res) => {
   if (!isNaN(req.query.max)) {
     filter.price["$lte"] = req.query.max;
   }
-  if (req.query.categoryId) {
-    filter.categoryId = req.query.categoryId;
+  if (req.query.category) {
+    filter.categoryId = req.query.category;
   }
   if (!isNaN(req.query.min)) {
     filter.price["$gte"] = req.query.min;
@@ -221,7 +221,17 @@ router.get("/user/getAllProducts", async (req, res) => {
 //   }
 // });
 
-router.get("/user/:id", async (req, res) => {
+// router.get("/user/:id", async (req, res) => {
+//   try {
+//     let pro = await Product.findById(req.params.id);
+//     console.log(pro);
+//     res.send(pro);
+//   } catch (e) {
+//     res.status(400).send(e);
+//   }
+// });
+
+router.get("/user/getAllProducts/:id", async (req, res) => {
   try {
     let pro = await Product.findById(req.params.id);
     console.log(pro);
