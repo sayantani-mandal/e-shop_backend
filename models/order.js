@@ -21,20 +21,17 @@ const orderSchema = new mongoose.Schema({
   email: {
     type: String,
   },
-  products: [
-    {
-      productId: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Product',
-      },
-      quantity: {
-        type: Number,
-      },
-      price: {
-        type: Number,
-      },
-    },
-  ],
+  product: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Product',
+  },
+  price: {
+    type: Number,
+  },
+  quantity: {
+    type: Number,
+    default: 1,
+  },
   paymentMethod: {
     type: String,
     default: 'COD',
@@ -51,17 +48,4 @@ const orderSchema = new mongoose.Schema({
 
 const Order = mongoose.model('Order', orderSchema);
 
-// function validateOrder(order) {
-//   const schema = Joi.object({
-//     firstName: Joi.string().min(3).required(),
-//     lastName: Joi.string().min(3).required(),
-//     address: Joi.string().min(4).required(),
-//     products: Joi.array().required(),
-//     createdAt: Joi.date(),
-//   });
-
-//   return schema.validate(order);
-// }
-
-exports.Order = Order;
-//exports.validate = validateOrder;
+module.exports = Order;
