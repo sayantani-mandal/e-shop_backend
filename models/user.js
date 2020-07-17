@@ -1,7 +1,7 @@
-const mongoose = require("mongoose");
-const Joi = require("@hapi/joi");
-const jwt = require("jsonwebtoken");
-const passwordComplexity = require("joi-password-complexity");
+const mongoose = require('mongoose');
+const Joi = require('@hapi/joi');
+const jwt = require('jsonwebtoken');
+const passwordComplexity = require('joi-password-complexity');
 
 const userSchema = new mongoose.Schema({
   firstName: {
@@ -43,18 +43,30 @@ const userSchema = new mongoose.Schema({
   ],
 });
 
+// userSchema.methods.generateAuthToken = async function () {
+//   const user = this;
+//   const token = jwt.sign(
+//     { _id: this._id, email: this.email },
+//     "vidly_jwtPrivateKey"
+//   );
+//   user.tokens = user.tokens.concat({ token });
+//   await user.save();
+//   return token;
+// };
+
 userSchema.methods.generateAuthToken = async function () {
   const user = this;
   const token = jwt.sign(
     { _id: this._id, email: this.email },
-    "vidly_jwtPrivateKey"
+    'vidly_jwtPrivateKey',
+    { expiresIn: '60 seconds' }
   );
   user.tokens = user.tokens.concat({ token });
   await user.save();
   return token;
 };
 
-const User = mongoose.model("User", userSchema);
+const User = mongoose.model('User', userSchema);
 
 function validateUser(user) {
   const schema = Joi.object({

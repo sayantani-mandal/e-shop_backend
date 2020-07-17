@@ -35,6 +35,23 @@ router.post('/', auth, async (req, res) => {
   }
 });
 
+router.get('/', auth, async (req, res) => {
+  try {
+    let orders = await Order.find({ user: req.user._id })
+      .populate('product')
+      .populate('user')
+      .sort({ createdAt: -1 });
+    console.log(orders.length);
+    let order = {
+      count: orders.length,
+      orders,
+    };
+    res.send(order);
+  } catch (e) {
+    res.status(402).send(e);
+  }
+});
+
 function createOrder(req, productInfo, firstName, lastName, address) {
   console.log(req.user);
   return new Order({
